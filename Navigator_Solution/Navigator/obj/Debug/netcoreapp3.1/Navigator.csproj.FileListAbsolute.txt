@@ -1,0 +1,13 @@
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\bin\Debug\netcoreapp3.1\Navigator.exe
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\bin\Debug\netcoreapp3.1\Navigator.deps.json
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\bin\Debug\netcoreapp3.1\Navigator.runtimeconfig.json
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\bin\Debug\netcoreapp3.1\Navigator.runtimeconfig.dev.json
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\bin\Debug\netcoreapp3.1\Navigator.dll
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\bin\Debug\netcoreapp3.1\Navigator.pdb
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.AssemblyInfoInputs.cache
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.AssemblyInfo.cs
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.csproj.CoreCompileInputs.cache
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.dll
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.pdb
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.genruntimeconfig.cache
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.csprojAssemblyReference.cache
