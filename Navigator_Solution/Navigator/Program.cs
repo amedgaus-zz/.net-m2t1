@@ -35,8 +35,6 @@ namespace Navigator
                         Console.WriteLine(f);
                     }
                 }
-                    
-                
             }
             catch (System.Exception excpt)
             {
@@ -50,7 +48,8 @@ namespace Navigator
         static void Main(string[] args)
         {
             var visitor = new FileSystemVisitor();
-            //visitor.OnFileFound += () => Console.WriteLine("file found");
+            //public event Func<FileSystemInfo, bool> OnFileFound;
+            visitor.OnFileFound += () => Console.WriteLine("file found");
             var result = visitor.GetFiles(f => f.Name.Length > 5, new DirectoryInfo(args[0]));
         }
     }
