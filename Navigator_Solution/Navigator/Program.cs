@@ -8,31 +8,39 @@ namespace Navigator
     {
         //public event Action OnFileFound { add; remove; }
         //public event Action OnDirectoryFound { add; remove; }
+        public event Action<FileSystemInfo> OnFileFound;// { add; remove; }
+        public event Action<FileSystemInfo> OnDirectiryFound;
+
+        //public delegate void DoSomething(int a); ==Action<int>
+        //public delegate int DoSomething(int a); ==Func<int, int>
+
 
         public List<string> GetFiles(Func<FileSystemInfo, bool> condition, FileSystemInfo dirFiles)
         {
             var result = new List<string>();
+            if (stop) return result;
             //logic for looping through files
             try
             {
                 //GetFiles(dirFiles => condition(dirFiles))
                 foreach (string d in Directory.GetDirectories(dirFiles.ToString()))
                 {
-                    if (condition(new DirectoryInfo(d)))
+                    var dir = new DirectoryInfo(d);
+                    if (condition(dir))
                     {
                         result.Add(d);
-                        //OnDirectoryFound();
-                        Console.WriteLine(d);
+                        OnDirectiryFound?.Invoke(dir);
                     }
-                    GetFiles(d => condition(d), new DirectoryInfo(d));
+                    var r = GetFiles(d => condition(d), dir);
+                    result.AddRange(r);
                 }
                 foreach (string f in Directory.GetFiles(dirFiles.ToString()))
                 {
-                    if (condition(new FileInfo(f)))
+                    var fi = new FileInfo(f);
+                    if (condition(fi))
                     {
                         result.Add(f);
-                            //OnFileFound(); 
-                        Console.WriteLine(f);
+                        OnFileFound(fi); 
                     }
                 }
             }
@@ -45,12 +53,25 @@ namespace Navigator
     }
     class Program
     {
+        
         static void Main(string[] args)
         {
             var visitor = new FileSystemVisitor();
-            //public event Func<FileSystemInfo, bool> OnFileFound;
-            visitor.OnFileFound += () => Console.WriteLine("file found");
+
+            visitor.OnFileFound += (fi) => {
+                Console.WriteLine();
+                if (deep == 5)
+                {
+                    visitor.stop = true;
+                }
+                
+            };
             var result = visitor.GetFiles(f => f.Name.Length > 5, new DirectoryInfo(args[0]));
+        }
+
+        static void Print(FileSystemInfo fi)
+        {
+
         }
     }
 }
