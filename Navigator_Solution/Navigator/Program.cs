@@ -9,8 +9,9 @@ namespace Navigator
         //public event Action OnFileFound { add; remove; }
         //public event Action OnDirectoryFound { add; remove; }
         public event Action<FileSystemInfo> OnFileFound;// { add; remove; }
-        public event Action<FileSystemInfo> OnDirectiryFound;
-
+        public event Action<FileSystemInfo> OnDirectoryFound;
+        public Boolean stop=false;
+        public int Deep = 0;
         //public delegate void DoSomething(int a); ==Action<int>
         //public delegate int DoSomething(int a); ==Func<int, int>
 
@@ -23,13 +24,14 @@ namespace Navigator
             try
             {
                 //GetFiles(dirFiles => condition(dirFiles))
+                Deep++;
                 foreach (string d in Directory.GetDirectories(dirFiles.ToString()))
                 {
                     var dir = new DirectoryInfo(d);
                     if (condition(dir))
                     {
                         result.Add(d);
-                        OnDirectiryFound?.Invoke(dir);
+                        OnDirectoryFound?.Invoke(dir);
                     }
                     var r = GetFiles(d => condition(d), dir);
                     result.AddRange(r);
@@ -40,7 +42,7 @@ namespace Navigator
                     if (condition(fi))
                     {
                         result.Add(f);
-                        OnFileFound(fi); 
+                        OnFileFound?.Invoke(fi); 
                     }
                 }
             }
@@ -59,19 +61,24 @@ namespace Navigator
             var visitor = new FileSystemVisitor();
 
             visitor.OnFileFound += (fi) => {
-                Console.WriteLine();
-                if (deep == 5)
+                Console.WriteLine($"File "+fi+" found");
+                if (visitor.Deep >= 2)
                 {
+                    Console.WriteLine($"*** File stop condition: deep=" + visitor.Deep + " ***");
                     visitor.stop = true;
                 }
                 
             };
+            visitor.OnDirectoryFound += (dir) => {
+                Console.WriteLine($"Directory " + dir + " found");
+                if (visitor.Deep >= 2)
+                {
+                    Console.WriteLine($"*** Directory stop condition: deep=" + visitor.Deep + " ***");
+                    visitor.stop = true;
+                }
+
+            };
             var result = visitor.GetFiles(f => f.Name.Length > 5, new DirectoryInfo(args[0]));
-        }
-
-        static void Print(FileSystemInfo fi)
-        {
-
         }
     }
 }
