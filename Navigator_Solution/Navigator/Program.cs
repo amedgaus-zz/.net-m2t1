@@ -10,27 +10,31 @@ namespace Navigator
         //public event Action OnDirectoryFound { add; remove; }
         public event Action<FileSystemInfo> OnFileFound;// { add; remove; }
         public event Action<FileSystemInfo> OnDirectoryFound;
-        public Boolean stop=false;
-        public int Deep = 0;
+        public bool Stop { get; set; } = false;
+        public bool Exclude { get; set; } = false;
         //public delegate void DoSomething(int a); ==Action<int>
         //public delegate int DoSomething(int a); ==Func<int, int>
 
+        //FileSystemVisitor(FileSystemBlaBla fs)
+        //{
+        //    this.fs = fs;
+        //}
 
         public List<string> GetFiles(Func<FileSystemInfo, bool> condition, FileSystemInfo dirFiles)
         {
             var result = new List<string>();
-            if (stop) return result;
             //logic for looping through files
             try
             {
-                //GetFiles(dirFiles => condition(dirFiles))
-                Deep++;
                 foreach (string d in Directory.GetDirectories(dirFiles.ToString()))
                 {
+                    if (Stop) return result;
                     var dir = new DirectoryInfo(d);
                     if (condition(dir))
                     {
-                        result.Add(d);
+                        if (!Exclude)
+                            result.Add(d);
+                        Exclude = false;
                         OnDirectoryFound?.Invoke(dir);
                     }
                     var r = GetFiles(d => condition(d), dir);
@@ -38,10 +42,12 @@ namespace Navigator
                 }
                 foreach (string f in Directory.GetFiles(dirFiles.ToString()))
                 {
+                    if (Stop) return result;
                     var fi = new FileInfo(f);
                     if (condition(fi))
                     {
-                        result.Add(f);
+                        if (!Exclude)
+                            result.Add(f);
                         OnFileFound?.Invoke(fi); 
                     }
                 }
@@ -59,22 +65,30 @@ namespace Navigator
         static void Main(string[] args)
         {
             var visitor = new FileSystemVisitor();
-
+            var counter = 0;
             visitor.OnFileFound += (fi) => {
+                counter++;
                 Console.WriteLine($"File "+fi+" found");
-                if (visitor.Deep >= 2)
+                if (counter >= 2)
                 {
-                    Console.WriteLine($"*** File stop condition: deep=" + visitor.Deep + " ***");
-                    visitor.stop = true;
+                    //Console.WriteLine($"*** File stop condition: deep=" + visitor.Deep + " ***");
+                    //visitor.Stop = true;
+                    if (fi.Name.Contains("setup"))
+                    {
+                        visitor.Exclude = true;
+                    }
                 }
                 
             };
             visitor.OnDirectoryFound += (dir) => {
+                counter++;
                 Console.WriteLine($"Directory " + dir + " found");
-                if (visitor.Deep >= 2)
+                if (counter >= 20)
                 {
-                    Console.WriteLine($"*** Directory stop condition: deep=" + visitor.Deep + " ***");
-                    visitor.stop = true;
+                    //Console.WriteLine($"*** Directory stop condition: deep=" + visitor.Deep + " ***");
+                    visitor.Stop = true;
+                    if (dir.Name == "Test")
+                        visitor.Exclude = true;
                 }
 
             };

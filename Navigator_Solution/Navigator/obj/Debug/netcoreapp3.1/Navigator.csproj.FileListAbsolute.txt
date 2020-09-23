@@ -10,3 +10,4 @@ C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigato
 C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.dll
 C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.pdb
 C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.genruntimeconfig.cache
+C:\repos\.net-m2t1\Navigator_Solution\Navigator\obj\Debug\netcoreapp3.1\Navigator.csprojAssemblyReference.cache
