@@ -10,6 +10,8 @@ namespace Navigator
         //public event Action OnDirectoryFound { add; remove; }
         public event Action<FileSystemInfo> OnFileFound;// { add; remove; }
         public event Action<FileSystemInfo> OnDirectoryFound;
+        public event Action<String> OnSearchStart;
+        public event Action<String> OnSearchFinish;
         public bool Stop { get; set; } = false;
         public bool Exclude { get; set; } = false;
         //public delegate void DoSomething(int a); ==Action<int>
@@ -26,6 +28,7 @@ namespace Navigator
             //logic for looping through files
             try
             {
+                OnSearchStart?.Invoke("Search has started");
                 foreach (string d in Directory.GetDirectories(dirFiles.ToString()))
                 {
                     if (Stop) return result;
@@ -51,6 +54,7 @@ namespace Navigator
                         OnFileFound?.Invoke(fi); 
                     }
                 }
+                OnSearchFinish?.Invoke("Search has finished");
             }
             catch (System.Exception excpt)
             {
@@ -92,7 +96,21 @@ namespace Navigator
                 }
 
             };
+            visitor.OnSearchStart += Visitor_OnSearchStart;
+            visitor.OnSearchFinish += Visitor_OnSearchFinish;
             var result = visitor.GetFiles(f => f.Name.Length > 5, new DirectoryInfo(args[0]));
+        }
+
+        private static void Visitor_OnSearchStart(String str)
+        {
+            Console.WriteLine(str);
+            //throw new NotImplementedException();
+        }
+
+        private static void Visitor_OnSearchFinish(String str)
+        {
+            Console.WriteLine(str);
+            //throw new NotImplementedException();
         }
     }
 }
