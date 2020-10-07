@@ -54,12 +54,12 @@ namespace Navigator
                         OnFileFound?.Invoke(fi); 
                     }
                 }
-                OnSearchFinish?.Invoke("Search has finished");
             }
             catch (System.Exception excpt)
             {
                 Console.WriteLine(excpt.Message);
             }
+            OnSearchFinish?.Invoke("Search has finished");
             return result;
         }
     }
